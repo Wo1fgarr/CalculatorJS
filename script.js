@@ -31,6 +31,12 @@
     output.textContent = 0;
   }
 
+  function clearParams() {
+    a = '';
+    b = '';
+    sign = '';
+  }
+
   function deleteOneSymbol() {
     if (a.length > 0) {
       let text = a;
@@ -81,6 +87,9 @@
         input.textContent = `${a}${sign}${b}`;
       }
     }
+
+    // block multi task
+    if ( sign === e.target.dataset.operator) return;
     
     // write operator
     if (isOperator && e.target.dataset.operator !== '=') {
@@ -96,22 +105,24 @@
     }
 
     if (isAction && e.target.dataset.action === 'sqrt') {
-      sign = e.target.dataset.action;
+      sign = e.target.textContent;
       console.log(a, b, sign);
       input.textContent += `${sign}`;
     }
+
+    let result = '';
 
     if (e.target.dataset.operator === '=') { 
       if (b === '') b = a;
       switch (sign) {
         case "+":
-          a = (+a) + (+b);
+          result = (+a) + (+b);
           break;
         case "-":
-          a = (+a) - (+b);
+          result = (+a) - (+b);
           break;
         case "x":
-          a = (+a) * (+b);
+          result = (+a) * (+b);
           break;
         case "/":
           if (b === '0') {
@@ -121,21 +132,28 @@
             sign = '';
             return;
           }
-          a = (+a) / (+b);
+          result = (+a) / (+b);
           break;
         case "exp":
-          a = Math.pow((+a), (+b));
+          result = Math.pow((+a), (+b));
           break;
-        case "sqrt":
-          a = Math.sqrt((+a));
+        case "√":
+          if (a === '') a = b;
+          result = Math.sqrt((+a));
+          clearParams();
           break;
       }
       finish = true;
-      printIt(a);
+      printIt(result);
     }
   }
 
   function printIt(val) {
+    const value = val.toString();
+    console.log(value.length);
+    if (value.length > 10) {
+      val = val.toFixed(9);
+    }
     output.textContent = val;
     input.textContent = '';
     console.log(val);
