@@ -4,6 +4,7 @@
   let b = '';
   let sign = '';
   let finish = false;
+  let isSignPrinted = '';
 
 
   /* Elements UI */
@@ -89,8 +90,10 @@
     }
 
     // block multi task
-    if ( sign === e.target.dataset.operator) return;
-    
+    isSignPrinted = input.textContent.match(/[-,+,x,\/]/gm);
+    console.log(isSignPrinted);
+    if( a !== '' && b !== '' && sign !== '' && isSignPrinted !== null && e.target.dataset.operator !== '=') return;
+
     // write operator
     if (isOperator && e.target.dataset.operator !== '=') {
       sign = e.target.dataset.operator;
