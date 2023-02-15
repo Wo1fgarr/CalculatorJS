@@ -76,10 +76,10 @@
         input.textContent = `${a}`;
       }
       else if (a !== '' && b !== '' && finish) {
-        b = e.target.dataset.key;
+        b += e.target.dataset.key;
         finish = false;
         console.log(a, b, sign);
-        input.textContent = `${b}`;
+        input.textContent = `${a}${sign}${b}`;
       }
       else {
         // wtite to b value
@@ -148,6 +148,7 @@
       }
       finish = true;
       printIt(result);
+      clearParams();
     }
   }
 
