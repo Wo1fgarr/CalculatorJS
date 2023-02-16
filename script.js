@@ -59,7 +59,8 @@
   function calculate(e) {
     // if pressed not a button
     if (!e.target.classList.contains("key")) {
-      alert("No need press this element now. Please press the button!");
+      alert(`No need press this element now. 
+             Please press the button!`);
       return;
     };
 
@@ -74,14 +75,18 @@
         a += e.target.dataset.key;
         console.log(a, b, sign);
         input.textContent = `${a}`;
-      }
+      } 
+      else if (sign !== '' && a === '') {
+        a += e.target.dataset.key;
+        console.log(a, b, sign);
+        input.textContent = `${a}`;
+      } 
       else if (a !== '' && b !== '' && finish) {
         b += e.target.dataset.key;
         finish = false;
         console.log(a, b, sign);
         input.textContent = `${a}${sign}${b}`;
-      }
-      else {
+      } else {
         // wtite to b value
         b += e.target.dataset.key;
         console.log(a, b, sign);
@@ -92,7 +97,15 @@
     // block multi task
     isSignPrinted = input.textContent.match(/[-,+,x,\/]/gm);
     console.log(isSignPrinted);
-    if( a !== '' && b !== '' && sign !== '' && isSignPrinted !== null && e.target.dataset.operator !== '=') return;
+    if ( 
+        a !== '' && 
+        b !== '' && 
+        sign !== '' && 
+        isSignPrinted !== null && 
+        e.target.dataset.operator !== '='
+    ) {
+        return;
+      }
 
     // write operator
     if (isOperator && e.target.dataset.operator !== '=') {
@@ -101,7 +114,12 @@
       input.textContent += `${sign}`;
     }
 
-    if (isAction && e.target.dataset.action !== 'clear' && e.target.dataset.action !== 'sqrt' && e.target.dataset.action !== 'backspace' ) {
+    if (
+      isAction && 
+      e.target.dataset.action !== 'clear' && 
+      e.target.dataset.action !== 'sqrt' && 
+      e.target.dataset.action !== 'backspace' 
+    ) {
       sign = e.target.dataset.action;
       console.log(a, b, sign);
       input.textContent += `${sign}`;
@@ -129,10 +147,7 @@
           break;
         case "/":
           if (b === '0') {
-            output.textContent = 'Error';
-            a = '';
-            b = '';
-            sign = '';
+            errorMessage();
             return;
           }
           result = (+a) / (+b);
@@ -141,11 +156,21 @@
           result = Math.pow((+a), (+b));
           break;
         case "√":
-          if (a === '') a = b;
+          if (a === '') {
+            a = b;
+          }
+          if (
+            Math.sign(a) === -1 || Math.sign(b) === -1
+          ) {
+            errorMessage();
+            return;
+          }
+
           result = Math.sqrt((+a));
           clearParams();
           break;
       }
+      
       finish = true;
       printIt(result);
       clearParams();
@@ -155,12 +180,21 @@
   function printIt(val) {
     const value = val.toString();
     console.log(value.length);
+
     if (value.length > 10) {
       val = val.toFixed(9);
     }
+
     output.textContent = val;
     input.textContent = '';
     console.log(val);
+  }
+
+  function errorMessage() {
+    output.textContent = 'Error';
+    a = '';
+    b = '';
+    sign = '';
   }
 
 })();
