@@ -153,6 +153,12 @@
           result = (+a) / (+b);
           break;
         case "exp":
+          if (
+            Math.sign(a) === -1 || Math.sign(b) === -1
+          ) {
+            errorMessage();
+            return;
+          }
           result = Math.pow((+a), (+b));
           break;
         case "√":
